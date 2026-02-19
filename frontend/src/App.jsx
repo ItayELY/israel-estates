@@ -21,7 +21,8 @@ function App() {
       if (filters.type) queryParams.append('type', filters.type);
       if (filters.max_budget) queryParams.append('max_budget', filters.max_budget);
 
-      const response = await fetch(`http://127.0.0.1:5000/api/properties?${queryParams.toString()}`);
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
+      const response = await fetch(`${apiUrl}/api/properties?${queryParams.toString()}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

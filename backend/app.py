@@ -6,9 +6,15 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Configure SQLite database
+# Configure SQLite database (Support local dev and Render persistent disks)
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'properties.db')
+data_dir = '/data'
+if os.path.exists(data_dir):
+    db_path = os.path.join(data_dir, 'properties.db')
+else:
+    db_path = os.path.join(basedir, 'properties.db')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
