@@ -19,6 +19,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
+# Ensure database tables are created in production (gunicorn bypasses __main__)
+with app.app_context():
+    db.create_all()
+
 @app.route('/api/properties', methods=['GET'])
 def get_properties():
     query = Property.query
